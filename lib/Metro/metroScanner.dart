@@ -39,7 +39,9 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
         await qrCodeRef.update({'fromStation': widget.station});
         isScanned = true; // Mark as scanned
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('the first scan (in=true)')),
+          const SnackBar(
+              content: Text(
+                  'The ticket has been successfully scanned for the first time.\n The gate will now open.')),
         );
       } else {
         // If 'in' is true, update 'out' to true
@@ -54,18 +56,22 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
                   (outprice == '12.0 egp' || outprice == '15.0 egp')) ||
               ((price == '12.0 egp') && (outprice == '15.0 egp'))) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content:
-                    Text('the price of the ticket is less than the needed')));
+                content: Text(
+                    'the price of the ticket is less than the needed.\n The gate will not open')));
             return;
           }
           await qrCodeRef.update({'out': true});
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('the second scan (out=true)')),
+            const SnackBar(
+                content: Text(
+                    'The ticket has been successfully scanned for the second time\n The gate will now open')),
           );
         } else {
           // If 'out' is true, the QR code is already used
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('already scaned twice (in=out=true)')),
+            const SnackBar(
+                content: Text(
+                    'The ticket has already been scanned twice.\n The gate will not open.')),
           );
           throw Exception('This QR code is already used');
         }

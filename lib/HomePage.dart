@@ -12,7 +12,7 @@ class Homepage extends StatelessWidget {
         //a7mr Color(0xFFB31312),,  a5dr Color(0xFF00796B),,  Color(0xFF073042)
         backgroundColor: const Color(0xFF073042),
         title: const Text(
-          "Admin Dashboard",
+          "Ticket Scanner Machine",
           style: TextStyle(color: Colors.white),
         ),
       ),

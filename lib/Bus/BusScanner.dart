@@ -31,12 +31,16 @@ class _busQRCodeScannerPageState extends State<busQRCodeScannerPage> {
       if (!scannedStatus) {
         await qrCodeRef.update({'scanned': true});
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('the first scan (scanned=true)')),
+          
+          const SnackBar(
+              content: Text(
+                  'The ticket has been successfully scanned\n The gate will now open')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('already scaned twice (scanned=out=true)')),
+              content: Text(
+                  'This ticket has already been used.\n The gate will not open')),
         );
         throw Exception('This QR code is already used');
       }
@@ -110,7 +114,7 @@ class _busQRCodeScannerPageState extends State<busQRCodeScannerPage> {
                         }
                       }
                     },
-                  ),
+                    ),
           ),
           Expanded(
             flex: 1,
