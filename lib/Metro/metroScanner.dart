@@ -9,7 +9,6 @@ class QRCodeScannerPage extends StatefulWidget {
   const QRCodeScannerPage({super.key, required this.station});
 
   @override
-  // ignore: library_private_types_in_public_api
   _QRCodeScannerPageState createState() => _QRCodeScannerPageState();
 }
 
@@ -17,36 +16,32 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
   final metroService _metroService = metroService();
   String? qrText;
   bool isScanned = false;
-  bool stop = false; // Control flag to stop the scanner
+  bool stop = false;
 
   Future<void> checkAndUpdateQRCode(String qrCodeString) async {
-    if (isScanned) return; // If already scanned, do nothing
+    if (isScanned) return; 
 
-    // Search for the QR code document
     final qrCodeRef =
         FirebaseFirestore.instance.collection('QR').doc(qrCodeString);
     final qrCodeDoc = await qrCodeRef.get();
 
-    // If the document exists
     if (qrCodeDoc.exists) {
       final qrCodeData = qrCodeDoc.data() as Map<String, dynamic>;
       final bool inStatus = qrCodeData['in'] ?? false;
       final bool outStatus = qrCodeData['out'] ?? false;
 
-      // If 'in' is false, update it to true
       if (!inStatus) {
         await qrCodeRef.update({'in': true});
         await qrCodeRef.update({'fromStation': widget.station});
-        isScanned = true; // Mark as scanned
+        isScanned = true;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
               content: Text(
                   'The ticket has been successfully scanned for the first time.\n The gate will now open.')),
         );
       } else {
-        // If 'in' is true, update 'out' to true
         if (!outStatus) {
-          isScanned = true; // Mark as scanned
+          isScanned = true;
           String fromStation = qrCodeData['fromStation'];
           String price = qrCodeData['price'];
           String outprice =
@@ -67,7 +62,6 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
                     'The ticket has been successfully scanned for the second time\n The gate will now open')),
           );
         } else {
-          // If 'out' is true, the QR code is already used
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text(
@@ -83,7 +77,6 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
 
   @override
   void dispose() {
-    // Dispose of any resources here if necessary
     super.dispose();
   }
 
@@ -112,21 +105,19 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
                       if (qrcode.rawValue != null) {
                         setState(() {
                           qrText = qrcode.rawValue!;
-                          stop = true; // Stop further scanning
+                          stop = true;
                         });
 
                         try {
                           await checkAndUpdateQRCode(qrText!);
                           Navigator.of(context).pop();
                         } catch (e) {
-                          // Show error message
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(e.toString()),
                               duration: const Duration(seconds: 2),
                             ),
                           );
-                          // Allow scanning again if an error occurs
                           setState(() {
                             stop = false;
                           });

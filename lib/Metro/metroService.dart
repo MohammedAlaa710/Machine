@@ -6,14 +6,14 @@ class metroService {
   final List<String> transitStation12 = const ['Sadat', 'Al-Shohada'];
   final String transitStation23 = 'Attaba';
   final String transitStation13 = 'Gamal Abd Al-Naser';
-  static final metroService _instance = metroService._(); // Singleton instance
+  static final metroService _instance = metroService._(); 
   static List<QueryDocumentSnapshot> stations = [];
 
   factory metroService() {
     return _instance;
   }
 
-  metroService._(); // Private constructor for singleton
+  metroService._(); 
 
   Future<void> getStations() async {
     if (stations.isEmpty) {
@@ -40,14 +40,10 @@ class metroService {
   }
 
   List<String> getStationNames() {
-    //getStations
     return stations.map((station) => station['name'] as String).toList();
   }
 
-//0 1 2 3 4
-//1 2 3 4
   String calculatePrice(String from, String to) {
-    //metroPrice
     try {
       int routeLength = getRoute(from, to).routeStations.length - 1;
       if (routeLength < 10) return '6.0 egp';
@@ -60,13 +56,12 @@ class metroService {
   }
 
   int getStationIndex(String stationName) {
-    //getStationIndex
     for (int i = 0; i < stations.length; i++) {
       if (stations[i]['name'] == stationName) {
         return i;
       }
     }
-    return -1; // Station not found
+    return -1;
   }
 
   int getCollection(int index) {
@@ -97,7 +92,6 @@ class metroService {
       fromIndx = getTransitIndices(from, to)[1];
       toIndx = getTransitIndices(from, to)[2];
     }
-    //done 1
     if (fromCollection == toCollection) {
       for (int i = fromIndx;
           fromIndx < toIndx ? i < toIndx + 1 : i > toIndx - 1;
@@ -107,7 +101,6 @@ class metroService {
         route.line.add(toCollection);
       }
     } else {
-      //done 2
       if ((fromCollection == 1 && toCollection == 3) ||
           (fromCollection == 3 && toCollection == 1)) {
         List<int> naser = [];
@@ -141,8 +134,6 @@ class metroService {
             .add(getDirection(naser[1], toIndx, getCollection(toIndx)));
         route.line.add(getCollection(toIndx));
       }
-      ////////////////////////////////////////////////////////////////////////////////////////////////
-      //done 3
       else if ((fromCollection == 2 && toCollection == 3) ||
           (fromCollection == 3 && toCollection == 2)) {
         List<int> ataba = [];
@@ -176,31 +167,25 @@ class metroService {
             .add(getDirection(ataba[1], toIndx, getCollection(toIndx)));
         route.line.add(getCollection(toIndx));
       }
-      /////////////////////////////////////////////////////////////////////////////////////////////////
+      
       else if ((fromCollection == 1 && toCollection == 2) ||
           (fromCollection == 2 && toCollection == 1)) {
         List<int> sadat = [];
         List<int> shohada = [];
         if (fromCollection == 2 && fromIndx < 44) {
-          //el from fe line 2 abl el sadat
           sadat.add(44);
           sadat.add(18);
         } else if (fromCollection == 1 && fromIndx < 18) {
-          // el from fe line 1 abl el sadat
           sadat.add(18);
           sadat.add(44);
         }
         if (fromCollection == 2 && fromIndx > 47) {
-          // el from fe line 2 b3d el shohada
           shohada.add(47);
           shohada.add(21);
         } else if (fromCollection == 1 && fromIndx > 21) {
-          // el from fe line 1 b3d el shohada
           shohada.add(21);
           shohada.add(47);
         }
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-        ///done 4.1
         if (sadat.isNotEmpty) {
           for (int i = fromIndx;
               fromIndx < sadat[0]
@@ -224,8 +209,6 @@ class metroService {
               .add(getDirection(sadat[1], toIndx, getCollection(toIndx)));
           route.line.add(getCollection(toIndx));
         }
-        //////////////////////////////////////////////////////////////////////////////////////////////////
-        ///done 4.2
         else if (shohada.isNotEmpty) {
           for (int i = fromIndx;
               fromIndx < shohada[0]
@@ -249,11 +232,7 @@ class metroService {
               .add(getDirection(shohada[1], toIndx, getCollection(toIndx)));
           route.line.add(getCollection(toIndx));
         }
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        ///el gy hwa el statinos el fl nos
         else {
-          ////////////////////////////////////////////////////////////////////
-          ///ma7tat el khat el awl => naser, orabi
           if ((from == 'Gamal Abd Al-Naser' || from == 'Orabi') &&
               (to == 'Mohamed Naguib' || toIndx < 44)) {
             for (int i = fromIndx;
@@ -278,7 +257,6 @@ class metroService {
             route.line.add(getCollection(toIndx));
           } else if ((from == 'Gamal Abd Al-Naser' || from == 'Orabi') &&
               (to == 'Attaba' || toIndx > 47)) {
-            ///iiiii
             for (int i = fromIndx;
                 fromIndx < 21
                     ? (stations[i]['name'] != transitStation12[1] && i < 21)
@@ -300,8 +278,6 @@ class metroService {
                 .add(getDirection(47, toIndx, getCollection(toIndx)));
             route.line.add(getCollection(toIndx));
           }
-          ////////////////////////////////////////////////////////////////////
-          ///ma7tat el khat el tani naguib, awl if sadat w tani if shohada
           else if ((from == 'Mohamed Naguib') &&
               (to == 'Gamal Abd Al-Naser' || toIndx < 18)) {
             for (int i = fromIndx;
@@ -347,8 +323,6 @@ class metroService {
                 .add(getDirection(21, toIndx, getCollection(toIndx)));
             route.line.add(getCollection(toIndx));
           }
-          ////////////////////////////////////////////////////////////////////
-          ///ma7tat el khat el tani naguib, awl if sadat w tani if shohada
           else if ((from == 'Attaba') && (toIndx < 18)) {
             for (int i = fromIndx;
                 fromIndx < 44
@@ -401,7 +375,6 @@ class metroService {
   }
 
   List<int> getTransitIndices(String from, String to) {
-    //transitindex
     if ((from == transitStation23 || from == transitStation13) &&
         (to == transitStation23 || to == transitStation13)) {
       if (from == transitStation23) {
@@ -475,6 +448,3 @@ class metroService {
     }
   }
 }
-// line 1 => 0/34
-// line 2 => 35/54
-// line 3 => 55/77

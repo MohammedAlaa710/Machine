@@ -9,7 +9,6 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //a7mr Color(0xFFB31312),,  a5dr Color(0xFF00796B),,  Color(0xFF073042)
         backgroundColor: const Color(0xFF073042),
         title: const Text(
           "Ticket Scanner Machine",
@@ -73,8 +72,8 @@ class AdminButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 250, // Fixed width
-      height: 80, // Fixed height
+      width: 250, 
+      height: 80, 
       child: ElevatedButton.icon(
         icon: Icon(icon, size: 40),
         label: Text(text, style: const TextStyle(fontSize: 18)),

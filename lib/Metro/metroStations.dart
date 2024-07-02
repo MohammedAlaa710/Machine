@@ -62,7 +62,7 @@ class _MetroStationsState extends State<MetroStations> {
               },
             ),
             const SizedBox(
-                height: 20), // Add some space between the dropdown and button
+                height: 20), 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF073042),
@@ -82,8 +82,6 @@ class _MetroStationsState extends State<MetroStations> {
                             builder: (context) =>
                                 QRCodeScannerPage(station: selectedValue1)),
                       );
-
-                      // Add document functionality here QRCodeScannerPage
                     },
               child: const Text(
                 'Scan',
